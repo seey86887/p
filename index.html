@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Website</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            height: 200px;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .button-container {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .button-container .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 50px;
+            position: absolute;
+        }
+
+        .button1 {
+            left: 20%;
+        }
+
+        .button2 {
+            right: 20%;
+        }
+
+        .swal2-icon i.far.fa-check-circle {
+            font-size: 0;
+        }
+
+        .swal2-title {
+            display: none;
+        }
+
+        .swal2-content {
+            font-size: 24px;
+            text-align: center;
+        }
+
+        .swal2-icon.custom-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>CRUSH MO BA AKO?</h1>
+        <div class="button-container">
+            <a href="#" class="button button1" id="button1">OO!</a>
+            <a href="#" class="button button2" id="button2">HINDI!</a>
+        </div>
+    </div>
+
+    <script>
+        const button1 = document.getElementById('button1');
+        const button2 = document.getElementById('button2');
+
+        button1.addEventListener('click', () => {
+            Swal.fire({
+                icon: 'custom-icon',
+                title: '<i class="fas fa-heart" style="color: red; width: 50px; height: 50px;"></i>',
+                html: 'FIRST MOVE KANAAAA...',
+                showConfirmButton: false,
+                timer: 1500,
+            });
+
+            setTimeout(() => {
+                window.location.href = 'https://www.facebook.com/sammyqt0215/';
+            }, 1500);
+        });
+
+        button2.addEventListener('click', () => {
+            const container = document.querySelector('.container');
+            const maxX = container.clientWidth - button2.clientWidth;
+            const maxY = container.clientHeight - button2.clientHeight;
+
+            let randomX, randomY;
+            do {
+                randomX = Math.random() * maxX;
+                randomY = Math.random() * maxY;
+            } while (isCollision(button1, randomX, randomY));
+
+            button2.style.left = randomX + 'px';
+            button2.style.top = randomY + 'px';
+        });
+
+        function isCollision(element, x, y) {
+            const rect1 = element.getBoundingClientRect();
+            const rect2 = {
+                top: y,
+                right: x + element.clientWidth,
+                bottom: y + element.clientHeight,
+                left: x
+            };
+
+            return (
+                rect1.top < rect2.bottom &&
+                rect1.right > rect2.left &&
+                rect1.bottom > rect2.top &&
+                rect1.left < rect2.right
+            );
+        }
+    </script>
+</body>
+</html>
