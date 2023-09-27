@@ -167,10 +167,10 @@
                 margin-left: 10%;
             }
             .container #greet {
-            font-size: 72px;
+                font-size: 72px;
             }
             .container #typing-text {
-            font-size: 36px;
+                font-size: 36px;
             }
             .container2 {
                 margin-top: -100%;
@@ -186,12 +186,12 @@
                 max-width: 300px;
                 margin-right: 0;
             }
-            .button-container .button1 {  
-            left: 0;
+            .button-container .button1 {
+                left: 0;
             }
             .button-container .button2 {
-            right: 0;
-        }
+                right: 0;
+            }
         }
     </style>
 </head>
@@ -227,7 +227,7 @@
                 let i = 0;
                 const typingInterval = setInterval(function () {
                     if (i < text.length) {
-                        textElement.textContent += text.charAt(i);
+                        textElement.innerHTML += text.charAt(i);
                         i++;
                     } else {
                         clearInterval(typingInterval);
@@ -244,11 +244,11 @@
                             setTimeout(() => {
                                 currentTextIndex++;
                                 if (currentTextIndex < textsToType.length) {
-                                    textElement.textContent = "";
+                                    textElement.innerHTML = ""; // Use innerHTML here
                                     textElement.classList.remove("fade-in");
                                     typeText(textsToType[currentTextIndex]);
                                 } else {
-                                    textElement.textContent = textsToType[currentTextIndex];
+                                    textElement.innerHTML = textsToType[currentTextIndex]; // Use innerHTML here
                                     document.getElementById('container2').style.display = 'block';
                                 }
 
