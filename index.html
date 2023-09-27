@@ -225,44 +225,44 @@
             ];
             let currentTextIndex = 0;
 
-            function typeText(text) {
-                let i = 0;
-                const typingInterval = setInterval(function () {
-                    if (i < text.length) {
-                        textElement.textContent += text.charAt(i);
-                        i++;
-                    } else {
-                        clearInterval(typingInterval);
+        function typeText(text) {
+            let i = 0;
+            const typingInterval = setInterval(function () {
+                if (i < text.length) {
+                    textElement.innerHTML += text.charAt(i);
+                    i++;
+                } else {
+                    clearInterval(typingInterval);
+                    setTimeout(() => {
+                        if (currentTextIndex === 0) {
+                            greetElement.style.opacity = 0;
+                            greetElement.style.transform = "translateY(10px)";
+                            textElement.classList.add("fade-in");
+                        }
+        
+                        typingContainer.style.opacity = 0;
+                        typingContainer.style.transform = "translateY(10px)";
+        
                         setTimeout(() => {
-                            if (currentTextIndex === 0) {
-                                greetElement.style.opacity = 0;
-                                greetElement.style.transform = "translateY(10px)";
-                                textElement.classList.add("fade-in");
+                            currentTextIndex++;
+                            if (currentTextIndex < textsToType.length) {
+                                textElement.innerHTML = "This may sounds weird", "Your beauty never fails to captivate me", "I lack courage to ask you this personally..";
+                                textElement.classList.remove("fade-in");
+                                typeText(textsToType[currentTextIndex]);
+                            } else {
+                                textElement.innerHTML = textsToType[currentTextIndex];
+                                document.getElementById('container2').style.display = 'block';
                             }
-
-                            typingContainer.style.opacity = 0;
-                            typingContainer.style.transform = "translateY(10px)";
-
+        
                             setTimeout(() => {
-                                currentTextIndex++;
-                                if (currentTextIndex < textsToType.length) {
-                                    textElement.textContent = "";
-                                    textElement.classList.remove("fade-in");
-                                    typeText(textsToType[currentTextIndex]);
-                                } else {
-                                    textElement.textContent = textsToType[currentTextIndex];
-                                    document.getElementById('container2').style.display = 'block';
-                                }
-
-                                setTimeout(() => {
-                                    typingContainer.style.opacity = 1;
-                                    typingContainer.style.transform = "translateY(0)";
-                                }, 500);
-                            }, 1000);
+                                typingContainer.style.opacity = 1;
+                                typingContainer.style.transform = "translateY(0)";
+                            }, 500);
                         }, 1000);
-                    }
-                }, 100);
-            }
+                    }, 1000);
+                }
+            }, 100);
+        }
 
             setTimeout(() => {
                 greetElement.style.opacity = 1;
