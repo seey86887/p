@@ -1,58 +1,146 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Weh?</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <title>Mwehe</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-            margin: 0;
-            padding: 0;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background-color: #f5f5f5;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
         }
 
         .container {
-            max-width: 800px;
-            height: 200px;
-            padding: 20px;
-            background-color: #ffffff;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            text-align: center;
             position: relative;
+            margin-top: -10%;
+            margin-right: 10%;
         }
 
-        h1 {
+        #greet {
+            font-size: 48px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1s ease-in-out, transform 0.5s ease-out;
+        }
+
+        .popup {
+            transform: translateY(20px);
+            transition: transform 0.5s ease-out;
+        }
+
+        .typing-container {
             text-align: center;
+            opacity: 1;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+        }
+
+        .fade-in {
+            opacity: 1 !important;
+            transform: translateY(0) !important;
+        }
+
+        #typing-text {
+            font-size: 24px;
+            overflow: hidden;
+            white-space: nowrap;
+            border-right: 3px solid #ff69b4;
+            animation: typing 2s steps(40, end), blink-caret 0.5s step-end infinite;
+            color: #ff69b4;
+        }
+
+        @keyframes typing {
+            0% {
+                width: 0;
+            }
+            100% {
+                width: 100%;
+            }
+        }
+
+        @keyframes blink-caret {
+            from,
+            to {
+                border-color: transparent;
+            }
+            50% {
+                border-color: #ff69b4;
+            }
+        }
+
+        .container2 {
+            max-width: 400px;
+            min-height: 160px;
+            padding: 20px;
+            background-color: #f2e9e1;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            position: relative;
+            display: none;
+            opacity: 0;
+            animation: fadeIn 1s ease-in-out forwards;
+            text-align: center;
+            margin-top: -10%;
+            margin-right: 25%;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .container2 h1 {
+            font-size: 32px;
+            color: #ff69b4;
+            text-align: center;
+            margin-bottom: 20px;
         }
 
         .button-container {
             text-align: center;
-            margin-top: 50px;
         }
 
         .button-container .button {
             display: inline-block;
             padding: 10px 20px;
-            background-color: #007bff;
+            background-color: #ff69b4;
             color: #ffffff;
             text-decoration: none;
             border-radius: 5px;
             cursor: pointer;
-            width: 50px;
             position: absolute;
+            margin: 0 10px;
+            font-size: 20px;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .button-container .button:hover {
+            background-color: #ff4f9d;
         }
 
         .button1 {
-            left: 20%;
+            width: 100px;
+            left: 7%;
         }
 
         .button2 {
-            right: 20%;
+            width: 100px;
+            right: 7%;
         }
 
         .swal2-icon i.far.fa-check-circle {
@@ -72,10 +160,38 @@
             font-size: 48px;
             margin-bottom: 16px;
         }
+
+        @media (max-width: 420px) {
+            .container {
+                margin-top: -100%;
+                margin-right: 0;
+            }
+            .container2 {
+                margin-top: -100%;
+                margin-left: 0;
+                width: 65%;
+                height: 200px;
+            }
+            .button-container .button {
+                font-size: 14px;
+                width: fit-content;
+            }
+            .custom-swal-popup {
+                max-width: 300px;
+                margin-right: 50px;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
+        <h1 id="greet">HI,</h1>
+        <div class="typing-container">
+            <h1 id="typing-text"></h1>
+        </div>
+    </div>
+
+    <div class="container2" id="container2">
         <h1>CRUSH MO BA AKO?</h1>
         <div class="button-container">
             <a href="#" class="button button1" id="button1">OO!</a>
@@ -84,54 +200,123 @@
     </div>
 
     <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const greetElement = document.getElementById("greet");
+            const typingContainer = document.querySelector(".typing-container");
+            const textElement = document.getElementById("typing-text");
+            const textsToType = ["This may sounds weird.", "Adding new text.", "Another text to type."];
+            let currentTextIndex = 0;
+
+            function typeText(text) {
+                let i = 0;
+                const typingInterval = setInterval(function () {
+                    if (i < text.length) {
+                        textElement.textContent += text.charAt(i);
+                        i++;
+                    } else {
+                        clearInterval(typingInterval);
+                        setTimeout(() => {
+                            if (currentTextIndex === 0) {
+                                greetElement.style.opacity = 0;
+                                greetElement.style.transform = "translateY(10px)";
+                                textElement.classList.add("fade-in");
+                            }
+
+                            typingContainer.style.opacity = 0;
+                            typingContainer.style.transform = "translateY(10px)";
+
+                            setTimeout(() => {
+                                currentTextIndex++;
+                                if (currentTextIndex < textsToType.length) {
+                                    textElement.textContent = "";
+                                    textElement.classList.remove("fade-in");
+                                    typeText(textsToType[currentTextIndex]);
+                                } else {
+                                    textElement.textContent = textsToType[currentTextIndex];
+                                    document.getElementById('container2').style.display = 'block';
+                                }
+
+                                setTimeout(() => {
+                                    typingContainer.style.opacity = 1;
+                                    typingContainer.style.transform = "translateY(0)";
+                                }, 500);
+                            }, 1000);
+                        }, 1000);
+                    }
+                }, 100);
+            }
+
+            setTimeout(() => {
+                greetElement.style.opacity = 1;
+                greetElement.classList.add("popup");
+
+                setTimeout(() => {
+                    typeText(textsToType[currentTextIndex]);
+                }, 2000);
+            }, 2000);
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
         const button1 = document.getElementById('button1');
         const button2 = document.getElementById('button2');
 
         button1.addEventListener('click', () => {
-            Swal.fire({
-                icon: 'custom-icon',
-                title: '<i class="fas fa-heart" style="color: red; width: 50px; height: 50px;"></i>',
-                html: 'FIRST MOVE KANAAAA...',
-                showConfirmButton: false,
-                timer: 1500,
-            });
+            const container2 = document.getElementById('container2');
+            if (container2.style.display === 'block') {
+                const swalPosition = window.innerWidth <= 600 ? 'top' : 'center';
+                Swal.fire({
+                    icon: 'custom-icon',
+                    title: '<i class="fas fa-heart" style="color: red; width: 50px; height: 50px;"></i>',
+                    html: 'CRUSHBACK AGAD <br> BASTA IKAW HIHI',
+                    showConfirmButton: false,
+                    timer: 3500,
+                    position: swalPosition,
+                    customClass: {
+                        popup: 'custom-swal-popup'
+                    }
+                });
 
-            setTimeout(() => {
-                window.location.href = 'https://www.facebook.com/sammyqt0215/';
-            }, 1500);
+                setTimeout(() => {
+                    window.location.href = 'https://vt.tiktok.com/ZSNdAnHy7/';
+                }, 3500);
+            }
         });
 
         button2.addEventListener('click', () => {
-            const container = document.querySelector('.container');
-            const maxX = container.clientWidth - button2.clientWidth;
-            const maxY = container.clientHeight - button2.clientHeight;
+            const container2 = document.getElementById('container2');
+            if (container2.style.display === 'block') {
+                const container = document.querySelector('.container2');
+                const maxX = container.clientWidth - button2.clientWidth;
+                const maxY = container.clientHeight - button2.clientHeight;
 
-            let randomX, randomY;
-            do {
-                randomX = Math.random() * maxX;
-                randomY = Math.random() * maxY;
-            } while (isCollision(button1, randomX, randomY));
+                let randomX, randomY;
+                do {
+                    randomX = Math.random() * maxX;
+                    randomY = Math.random() * maxY;
+                } while (isCollision(button1, randomX, randomY));
 
-            button2.style.left = randomX + 'px';
-            button2.style.top = randomY + 'px';
+                button2.style.left = randomX + 'px';
+                button2.style.top = randomY + 'px';
+            }
         });
+    });
 
-        function isCollision(element, x, y) {
-            const rect1 = element.getBoundingClientRect();
-            const rect2 = {
-                top: y,
-                right: x + element.clientWidth,
-                bottom: y + element.clientHeight,
-                left: x
-            };
+    function isCollision(element, x, y) {
+        const rect1 = element.getBoundingClientRect();
+        const rect2 = {
+            top: y,
+            right: x + element.clientWidth,
+            bottom: y + element.clientHeight,
+            left: x
+        };
 
-            return (
-                rect1.top < rect2.bottom &&
-                rect1.right > rect2.left &&
-                rect1.bottom > rect2.top &&
-                rect1.left < rect2.right
-            );
-        }
+        return (
+            rect1.top < rect2.bottom &&
+            rect1.right > rect2.left &&
+            rect1.bottom > rect2.top &&
+            rect1.left < rect2.right
+        );
+    }
     </script>
 </body>
 </html>
