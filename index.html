@@ -37,45 +37,36 @@
             transition: transform 0.5s ease-out;
         }
 
-        .typing-container {
-            text-align: center;
+     #typing-text-container {
+        display: inline-block;
+        position: relative;
+    }
+
+    #typing-text {
+        font-size: 24px;
+        overflow: hidden;
+        white-space: normal;
+        color: #ff69b4;
+    }
+
+    .blink-caret {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 3px; /* Adjust the width of the blinking line */
+        height: 100%;
+        background-color: #ff69b4;
+        animation: blink-caret 0.5s step-end infinite;
+    }
+
+    @keyframes blink-caret {
+        from, to {
             opacity: 1;
-            transform: translateY(20px);
-            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
         }
-
-        .fade-in {
-            opacity: 1 !important;
-            transform: translateY(0) !important;
+        50% {
+            opacity: 0;
         }
-
-        #typing-text {
-            font-size: 24px;
-            overflow: hidden;
-            white-space: nowrap;
-            border-right: 3px solid #ff69b4;
-            animation: typing 2s steps(40, end), blink-caret 0.5s step-end infinite;
-            color: #ff69b4;
-        }
-
-        @keyframes typing {
-            0% {
-                width: 0;
-            }
-            100% {
-                width: 100%;
-            }
-        }
-
-        @keyframes blink-caret {
-            from,
-            to {
-                border-color: transparent;
-            }
-            50% {
-                border-color: #ff69b4;
-            }
-        }
+    }
 
         .container2 {
             max-width: 400px;
@@ -218,8 +209,8 @@
             const textElement = document.getElementById("typing-text");
             const textsToType = [
               "This may sound weird",
-              "Your beauty <br> never fails to <br> captivate me",
-              "I lack the courage <br> to ask you this <br> personally..."
+              "Your beauty \nnever fails to \ncaptivate me",
+              "I lack the courage \nto ask you this \npersonally..."
             ];
             let currentTextIndex = 0;
 
